@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" class="light dark">
+
+<head>
+
+ <meta charset="UTF-8">
+ <title>Cliente - Render L.i</title>
+
+ <script src="./js/registraServiceWorker.js"></script>
+
+ <meta name="viewport" content="width=device-width">
+ <meta name="theme-color" content="#00a97f">
+ <link rel="icon" sizes="32x32" href="favicon.ico">
+ <link rel="manifest" href="site.webmanifest">
+ <script src="./ungap/custom-elements.js"></script>
+
+ <script type="module" src="./js/configura.js"></script>
+ <link rel="stylesheet" href="./css/estilos.css">
+ <link rel="stylesheet" href="./css/transicion_pestanas.css">
+
+</head>
+
+<body onload="descargaDatos()">
+
+ <md-top-app-bar adicional="tab" headline="headline">
+
+  <h1>Cliente</h1>
+
+  <!--<button is="md-menu-button" slot="navigation"></button>
+
+  <button type="button" class="md-standard-icon-button" title="Agregar"
+    slot="action">
+   <span class="material-symbols-outlined">add</span>
+  </button>
+
+  <button type="button" class="md-standard-icon-button" title="Editar"
+    slot="action">
+   <span class="material-symbols-outlined">edit</span>
+  </button>
+
+  <button is="md-overflow-button" slot="action"
+    onclick="overflow.alterna(this)"></button>-->
+
+ </md-top-app-bar>
+
+ <h1 id="headline">Cliente</h1>
+
+ <nav-tab-fixed id="tab"></nav-tab-fixed>
+
+ <main>
+   
+  <ul  id="lista" class="md-list">
+      <li class="md-two-line icon">
+        <span class="material-symbols-outlined">person</span>
+        <span class="headline">
+          Cargando…
+        </span>
+        <span class="supporting">
+          <progress max="100">Cargando…</progress>
+        </span>
+      </li>
+    </ul>
+ </main>
+
+ <script type="module">
+    import { muestraTextoDeAyuda } from "./lib/js/muestraTextoDeAyuda.js"
+    import { exportaAHtml } from "./lib/js/exportaAHtml.js"
+    import { consumeJson } from "./lib/js/consumeJson.js"
+    import { muestraError } from "./lib/js/muestraError.js"
+    import { htmlentities } from "./lib/js/htmlentities.js"
+
+    async function descargaDatos() {
+   try {
+    const respuesta = await consumeJson("./srv/lista.php")
+    // Genera el código HTML de la lista.
+    let render = ""
+    for (const modelo of respuesta.body) {
+     /* Codifica nombre y color para que cambie los caracteres especiales y
+      * el texto no se pueda interpretar como HTML. Esta técnica evita la
+      * inyección de código. */
+     const nombre =
+      typeof modelo.nombre === "string" ? htmlentities(modelo.nombre) : ""
+     const chiste =
+      typeof modelo.chiste === "string" ? htmlentities(modelo.chiste) : ""
+     render += /* html */
+      `<li class='md-two-line icon'>
+      <span class='material-symbols-outlined'>person</span>
+      <span class='headline'>${nombre}</span>
+      <span class='supporting'>${chiste}</span>
+    </li>`
+    }
+    lista.innerHTML = render
+   } catch (error) {
+    muestraError(error)
+   }
+  }
+  exportaAHtml(descargaDatos)
+  </script>
+
+ <!-- <md-overflow-menu id="overflow">
+
+  <button type="button">
+   <span class="material-symbols-outlined">star</span>
+   Marcar favorito
+  </button>
+
+  <button type="button">
+   <span class="material-symbols-outlined"> delete</span>
+   Eliminar
+  </button>
+
+ </md-overflow-menu> -->
+
+<!-- <nav-drw></nav-drw> -->
+
+</body>
+
+</html>

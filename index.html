@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" class="light dark">
+
+<head>
+
+ <meta charset="UTF-8">
+ <title>Formulario - Render L.i</title>
+
+ <!-- Resumen para los motores de búsqueda. -->
+ <meta name="description" content="Ejemplo de PWA con Material Design">
+
+ <script src="./js/registraServiceWorker.js"></script>
+
+ <meta name="viewport" content="width=device-width">
+
+ <!-- Color de la barra de navegación de Chrome en dispositivos móviles. -->
+ <meta name="theme-color" content="#00a97f">
+
+ <!-- Ícono para la página web, que normalmente se pone en la raíz del sitio.
+  Puede ser diferente para cada página. -->
+ <link rel="icon" sizes="32x32" href="favicon.ico">
+
+ <!-- Configuración de la PWA para Chrome, Edge y Safari.
+  Debe ponerse en todas las páginas. -->
+ <link rel="manifest" href="site.webmanifest">
+
+ <!-- Permite a los navegadores, que como Safari no soportan el estándar
+  completo de custom elementsm, lo cumplan totalmente. Debe ponerse en todas
+  las páginas. -->
+ <script src="./ungap/custom-elements.js"></script>
+
+ <!-- Configuración de todas las páginas con JavaSript. -->
+ <script type="module" src="./js/configura.js"></script>
+ <link rel="stylesheet" href="./css/estilos.css">
+ <link rel="stylesheet" href="./css/transicion_pestanas.css">
+
+</head>
+
+<body>
+  <form novalidate onsubmit="procesaForm(event)">
+
+ <md-top-app-bar class="center-aligned">
+
+  <h1>Formulario</h1>
+
+  <button is="md-menu-button" slot="navigation" style="visibility: hidden;"></button>
+
+ </md-top-app-bar>
+
+ <nav-tab-fixed id="tab"></nav-tab-fixed>
+
+ <main>
+    
+    <p>
+    <span id="etiquetaGrupo" class="md-filled-text-field" accesskey="G">
+     <md-select-menu name="nombre" required
+       aria-labelledby="etiquetaGrupo"
+       options="opcionesDeGrupo"></md-select-menu>
+     <span>Nombre *</span>
+     <small>Obligatorio</small>
+    </span>
+   </p>
+
+   <p>
+    <button type="submit" class="md-filled-button" style="width: 100%;">Enviar</button>
+   </p>
+
+  </main>
+
+  <md-options-menu id="opcionesDeGrupo" aria-label="Opciones de grupo">
+   <span data-value="" title="Selecciona nombre"></span>
+   <span data-value="ang">Roberto</span>
+   <span data-value="miss">Jack</span>
+   <span data-value="mar">Sebastian</span>
+   <span data-value="ant">Miguel</span>
+   <span data-value="jess">Gonzalo</span>
+   <span data-value="est">Edy</span>
+  </md-options-menu>
+
+  </form> 
+
+ <!-- <nav-drw></nav-drw> -->
+<script type="module">
+  import { muestraTextoDeAyuda } from "./lib/js/muestraTextoDeAyuda.js"
+  import { exportaAHtml } from "./lib/js/exportaAHtml.js"
+  import { muestraError } from "./lib/js/muestraError.js"
+  import { submitForm } from "./lib/js/submitForm.js"
+
+  /**
+   * @param {Event} event
+   */
+  async function procesaForm(event) {
+   try {
+    const respuesta =
+     await submitForm(
+      "srv/procesa.php", event)
+    alert(respuesta.body)
+   } catch (error) {
+    muestraError(error)
+   }
+  }
+  exportaAHtml(procesaForm)
+
+ </script>
+
+</body>
+
+
+</html>

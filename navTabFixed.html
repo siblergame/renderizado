@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" class="light dark">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>Servidor - Render L.i</title>
+
+  <script src="./js/registraServiceWorker.js"></script>
+
+  <meta name="viewport" content="width=device-width">
+  <meta name="theme-color" content="#00a97f">
+  <link rel="icon" sizes="32x32" href="favicon.ico">
+  <link rel="manifest" href="site.webmanifest">
+  <script src="./ungap/custom-elements.js"></script>
+
+  <script type="module" src="./js/configura.js"></script>
+  <link rel="stylesheet" href="./css/estilos.css">
+  <link rel="stylesheet" href="./css/transicion_pestanas.css">
+  <link rel="expect" blocking="render" href="#navtabfixed">
+
+</head>
+
+<body onload="consumeJson('./srv/render.php')
+  .then(respuesta => muestraObjeto(document, respuesta.body))
+  .catch(muestraError)">
+
+  <md-top-app-bar adicional="tab" headline="headline">
+
+    <h1>Servidor</h1>
+
+    <!--<button type="button" class="md-standard-icon-button" title="Agregar"
+    slot="action">
+   <span class="material-symbols-outlined">add</span>
+  </button>
+  <button type="button" class="md-standard-icon-button" title="Editar"
+    slot="action">
+   <span class="material-symbols-outlined">edit</span>
+  </button>-->
+
+  </md-top-app-bar>
+
+  <h1 id="headline">Servidor</h1>
+
+  <nav-tab-fixed id="tab"></nav-tab-fixed>
+
+  <main>
+    <ul  id="lista" class="md-list">
+      <li class="md-two-line icon">
+        <span class="material-symbols-outlined">person</span>
+        <span class="headline">
+          Cargando…
+        </span>
+        <span class="supporting">
+          <progress max="100">Cargando…</progress>
+        </span>
+      </li>
+    </ul>
+  </main>
+
+  <script type="module">
+    import { muestraTextoDeAyuda } from "./lib/js/muestraTextoDeAyuda.js"
+    import { consumeJson } from "./lib/js/consumeJson.js"
+    import { muestraError } from "./lib/js/muestraError.js"
+    import { muestraObjeto } from "./lib/js/muestraObjeto.js"
+  </script>
+
+</body>
+
+</html>
